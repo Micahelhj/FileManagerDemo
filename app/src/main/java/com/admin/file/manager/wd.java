@@ -114,7 +114,7 @@ public class wd {
      * @param fileName file名
      * @return
      */
-    private static File getFile(String filePath, String fileName) {
+    public static File getFile(String filePath, String fileName) {
         //path表示你所创建文件的路径
         File f = new File(filePath);
         if (!f.exists()) {

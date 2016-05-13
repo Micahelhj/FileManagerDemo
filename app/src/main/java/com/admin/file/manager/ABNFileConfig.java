@@ -15,7 +15,7 @@
  */
 package com.admin.file.manager;
 
-public class ABFileConfig {
+public class ABNFileConfig {
     /**
      * 手机内部存储的数据库文件
      */
@@ -79,7 +79,7 @@ public class ABFileConfig {
     }
 
     public static void setDownload_root_dir(String download_root_dir) {
-        ABFileConfig.download_root_dir = download_root_dir;
+        ABNFileConfig.download_root_dir = download_root_dir;
     }
 
     public static String getDownload_image_dir() {
@@ -87,7 +87,7 @@ public class ABFileConfig {
     }
 
     public static void setDownload_image_dir(String download_image_dir) {
-        ABFileConfig.download_image_dir = download_image_dir;
+        ABNFileConfig.download_image_dir = download_image_dir;
     }
 
     public static String getDownload_file_dir() {
@@ -95,7 +95,7 @@ public class ABFileConfig {
     }
 
     public static void setDownload_file_dir(String download_file_dir) {
-        ABFileConfig.download_file_dir = download_file_dir;
+        ABNFileConfig.download_file_dir = download_file_dir;
     }
 
     public static String getCache_dir() {
@@ -103,7 +103,7 @@ public class ABFileConfig {
     }
 
     public static void setCache_dir(String cache_dir) {
-        ABFileConfig.cache_dir = cache_dir;
+        ABNFileConfig.cache_dir = cache_dir;
     }
 
     public static String getCrach_dir() {
@@ -111,7 +111,7 @@ public class ABFileConfig {
     }
 
     public static void setCrach_dir(String crach_dir) {
-        ABFileConfig.crach_dir = crach_dir;
+        ABNFileConfig.crach_dir = crach_dir;
     }
 
     public static String getDbDir() {

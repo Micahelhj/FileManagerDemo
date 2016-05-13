@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ABFileUtil {
+public class ABNFileUtil {
 
     /**
      * 剩余空间大于200M才使用SD缓存.
@@ -71,7 +71,7 @@ public class ABFileUtil {
     public static Bitmap getBitmapFromSrc(String src) {
         Bitmap bit = null;
         try {
-            bit = BitmapFactory.decodeStream(ABFileUtil.class.getResourceAsStream(src));
+            bit = BitmapFactory.decodeStream(ABNFileUtil.class.getResourceAsStream(src));
         } catch (Exception e) {
             ABLogUtil.d("获取图片异常：" + e.getMessage());
         }
@@ -584,7 +584,7 @@ public class ABFileUtil {
     public static final String URI_TYPE_FILE = "file";
 
 
-    private ABFileUtil() {
+    private ABNFileUtil() {
         throw new AssertionError();
     }
 

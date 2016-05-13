@@ -15,6 +15,6 @@ public class app extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ABFileManager.initFileDir(this);
+        ABNFileManager.initFileDir(this);
     }
 }
