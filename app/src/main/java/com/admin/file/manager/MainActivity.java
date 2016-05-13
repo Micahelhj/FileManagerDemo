@@ -1,5 +1,6 @@
 package com.admin.file.manager;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         TextView textView = (TextView) findViewById(R.id.btn_0);
         long s = new File(ABFileManager.getFileDownloadDir(this)).getUsableSpace();
-        textView.setText("" + ABFileManager.getAvailableMemorySize(ABFileManager.getFileDownloadDir(this)));
+        try {
+            textView.setText("" + ABFileManager.getFolderSize(new File(ABFileManager.getFileDownloadDir(this))));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ABFileUtil.deleteFile(ABFileManager.getDbDownloadDir(this) + "/" + "");
     }
 
     @Override

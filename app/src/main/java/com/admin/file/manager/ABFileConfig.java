@@ -16,9 +16,47 @@
 package com.admin.file.manager;
 
 public class ABFileConfig {
+    /**
+     * 手机内部存储的数据库文件
+     */
     private static String databases = "databases";
+    /**
+     * 手机内部SharedPreferences文件
+     */
     private static String shared_prefs = "shared_prefs";
 
+    /**
+     * 默认下载文件存储目录.
+     */
+    private static String download_root_dir = "downloads";
+
+    /**
+     * 默认下载图片文件存储目录.
+     */
+    private static String download_image_dir = "images";
+
+    /**
+     * 默认下载文件存储目录.
+     */
+    private static String download_file_dir = "files";
+
+    /**
+     * APP缓存目录.
+     */
+    private static String cache_dir = "caches";
+    /**
+     * APP异常文件存储目录.
+     */
+    private static String crach_dir = "crachs";
+
+    /**
+     * DB目录.
+     */
+    public static String DB_DIR = "db";
+
+    /**
+     * =================================================================================================
+     */
 
     public static String getDatabases() {
         return databases;
@@ -35,36 +73,6 @@ public class ABFileConfig {
     public void setShared_prefs(String shared_prefs) {
         this.shared_prefs = shared_prefs;
     }
-
-    /**
-     * 默认下载文件地址.
-     */
-    private static String download_root_dir = "download";
-
-    /**
-     * 默认下载图片文件地址.
-     */
-    private static String download_image_dir = "images";
-
-    /**
-     * 默认下载文件地址.
-     */
-    private static String download_file_dir = "files";
-
-    /**
-     * APP缓存目录.
-     */
-    private static String cache_dir = "cache";
-    /**
-     * APP异常文件存储目录.
-     */
-    private static String crach_dir = "crach";
-
-    /**
-     * DB目录.
-     */
-    public static String DB_DIR = "db";
-
 
     public static String getDownload_root_dir() {
         return download_root_dir;

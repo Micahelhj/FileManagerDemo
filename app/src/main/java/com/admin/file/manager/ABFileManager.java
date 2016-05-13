@@ -197,7 +197,9 @@ public class ABFileManager {
         return dbDownloadDir;
     }
 
-
+    /**
+     * ===================================================================================================
+     */
     /**
      * 清除本应用内部缓存(/data/data/com.xxx.xxx/cache)
      *
@@ -216,11 +218,12 @@ public class ABFileManager {
         deleteFilesByDirectory(new File(context.getFilesDir().getPath()
                 + context.getPackageName() + "/" + ABFileConfig.getDatabases()));
     }
+
     /**
      * 清除本应用所有数据库(/data/data/com.xxx.xxx/databases)
      */
     public static void cleanDB() {
-        deleteFilesByDirectory(new File(ABFileConfig.getDbDir()+ "/" + ABFileConfig.getDatabases()));
+        deleteFilesByDirectory(new File(ABFileConfig.getDbDir() + "/" + ABFileConfig.getDatabases()));
     }
 
     /**
@@ -270,18 +273,21 @@ public class ABFileManager {
     public static void cleanExternalImages() {
         deleteFilesByDirectory(new File(ABFileConfig.getDownload_image_dir()));
     }
+
     /**
      * 清除file_dir路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
      */
     public static void cleanExternalFiles() {
         deleteFilesByDirectory(new File(ABFileConfig.getDownload_file_dir()));
     }
+
     /**
      * 清除root_dir路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
      */
     public static void cleanExternalFile() {
         deleteFilesByDirectory(new File(ABFileConfig.getDownload_root_dir()));
     }
+
     /**
      * 清除自定义路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
      *
@@ -316,12 +322,62 @@ public class ABFileManager {
     private static void deleteFilesByDirectory(File directory) {
         if (directory != null && directory.exists() && directory.isDirectory()) {
             for (File item : directory.listFiles()) {
-                if (item.lastModified()<System.currentTimeMillis())
-                item.delete();
+                if (item.lastModified() < System.currentTimeMillis())
+                    item.delete();
             }
         }
     }
 
+    /**
+     * 删除DB文件
+     *
+     * @param context
+     * @param dbFileName
+     */
+    public void deleteFileInDbs(Context context, String dbFileName) {
+        ABFileUtil.deleteFile(getDbDownloadDir(context) + "/" + dbFileName);
+    }
+
+    /**
+     * 删除Images文件
+     *
+     * @param context
+     * @param imageFileName
+     */
+    public void deleteFileInImages(Context context, String imageFileName) {
+        ABFileUtil.deleteFile(getImageDownloadDir(context) + "/" + imageFileName);
+    }
+
+    /**
+     * 删除Files文件
+     *
+     * @param context
+     * @param fileName
+     */
+    public void deleteFileInFiles(Context context, String fileName) {
+        ABFileUtil.deleteFile(getImageDownloadDir(context) + "/" + fileName);
+    }
+
+    /**
+     * 删除Crachs文件
+     *
+     * @param context
+     * @param crachsFileName
+     */
+    public void deleteFileInCrachs(Context context, String crachsFileName) {
+        ABFileUtil.deleteFile(getImageDownloadDir(context) + "/" + crachsFileName);
+    }
+    /**
+     * =============================================================================================
+     */
+
+    /**
+     * 取得文件夹大小
+     *
+     * @param file
+     * @return
+     * @throws Exception 文件大小 long
+     */
     public static long getFolderSize(File file) throws Exception {
         long size = 0;
         try {
