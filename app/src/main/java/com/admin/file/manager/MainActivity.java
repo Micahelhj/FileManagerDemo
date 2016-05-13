@@ -29,9 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         File f3 = ABNFileManager.getFile(ABNFileManager.getFileDownloadDir(this), "f3.txt");
         File f4 = ABNFileManager.getFile(ABNFileManager.getImageDownloadDir(this), "f4.txt");
 
-        ABNLogManager.getInstance(this).recordLog2Native("cals","asdasdasdasdsad");
-        Intent stateService = new Intent(this, WdLogService.class);
-        startService(stateService);
+//        ABNLogManager.getInstance(this).recordLog2Native("cals","asdasdasdasdsad");
+//        startService(stateService);
     }
 
     @Override
