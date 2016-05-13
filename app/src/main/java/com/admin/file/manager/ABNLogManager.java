@@ -1,11 +1,12 @@
 package com.admin.file.manager;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.List;
 
 /**
  * 项目名称：FileManagerDemo
@@ -17,12 +18,20 @@ import java.util.concurrent.Executors;
  * 修改备注：
  */
 public class ABNLogManager {
+
+    public static String LOG_SERVICE_BROADSERVICE_ACTION = "LogService";
+    public static String LOG_SERVICE_INTEXT_KEY = "LogService";
+
     private static Context context;
+
     public static ABNLogManager application;
 
     public ABNLogManager(Context c) {
+        isRun = isServiceRunning("");
         context = c;
     }
+
+    private boolean isRun = false;
 
     public static ABNLogManager getInstance(Context c) {
         if (application == null)
@@ -31,30 +40,66 @@ public class ABNLogManager {
         return application;
     }
 
-    //创建一个可重用固定线程数的线程池
-    private ExecutorService pool = Executors.newSingleThreadExecutor();
-
-    private String CURR_INSTALL_LOG_NAME = "Log.txt"; // 如果当前的日志写在内存中，记录当前的日志文件名称
-
-    private void add(String dir, InputStream data){
-        //pool.execute(new LogThread());
-    }
-
     /**
      * 记录日志到本地
      *
+     * @param dir
      * @param data
      */
-    public void recordLog2Native(String dir, InputStream data) {
-        ABNFileUtil.writeFile(ABNFileManager.getFile(ABNFileManager.getNormalLogDownloadDir(context) + File.separator + dir, CURR_INSTALL_LOG_NAME), data, true);
+    public void recordLog(String dir, InputStream data) {
+        if (isRun)
+            sendLogService(new ABNLogEntity(dir, data));
+        else
+            startLogService(new ABNLogEntity(dir, data));
+    }
+
+    public void recordLog(String dir, String data) {
+        if (isRun)
+            sendLogService(new ABNLogEntity(dir, data));
+        else
+            startLogService(new ABNLogEntity(dir, data));
     }
 
     /**
-     * 记录日志到本地
+     * 发送日志信息广播
      *
-     * @param content
+     * @param logEntity
      */
-    public void recordLog2Native(String dir, String content) {
-        ABNFileUtil.writeFile(ABNFileManager.getNormalLogDownloadDir(context) + File.separator + dir + File.separator + CURR_INSTALL_LOG_NAME, content, true);
+    private void sendLogService(ABNLogEntity logEntity) {
+        Intent intent = new Intent(LOG_SERVICE_BROADSERVICE_ACTION);
+        intent.putExtra(LOG_SERVICE_INTEXT_KEY, logEntity);
+        context.sendBroadcast(intent);
     }
+
+    /**
+     * 启动Log服务并传入日志信息
+     *
+     * @param logEntity
+     */
+    private void startLogService(ABNLogEntity logEntity) {
+        Intent intent = new Intent(context, ABNLogManagerSerVice.class);
+        intent.putExtra(LOG_SERVICE_INTEXT_KEY, logEntity);
+        context.startService(intent);
+    }
+
+    /**
+     * 判断LogService是否正在运行
+     *
+     * @param serviceClassName
+     * @return
+     */
+    public static boolean isServiceRunning(String serviceClassName) {
+        if (TextUtils.isEmpty(serviceClassName))
+            return false;
+        final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
+            if (runningServiceInfo.service.getClassName().equals(serviceClassName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

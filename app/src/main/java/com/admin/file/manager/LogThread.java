@@ -1,8 +1,12 @@
 package com.admin.file.manager;
 
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * 项目名称：FileManagerDemo
@@ -15,6 +19,7 @@ import android.os.Message;
  */
 public class LogThread extends Thread {
 
+    private static Context context;
     /**
      * 开始处理
      */
@@ -23,19 +28,16 @@ public class LogThread extends Thread {
      * 处理结束
      */
     public final static int THREAD_FINISHED = 2;
-    //下载的文件大小
-    private long fileLength;
-    //文件的保存路径
-    private String filePath;
+
+    private String CURR_INSTALL_LOG_NAME = "Log.txt"; // 如果当前的日志写在内存中，记录当前的日志文件名称
+    //文件夹名
+    private String dir;
     //是否线程已启动
     private boolean isStarted = false;
 
-    private Handler mHandler;
-
-
-    public LogThread(String filePath, Handler mHandler) {
-        this.filePath = filePath;
-        this.mHandler = mHandler;
+    public LogThread(Context context, String dir) {
+        this.dir = dir;
+        this.context = context;
     }
 
     /**
@@ -46,21 +48,10 @@ public class LogThread extends Thread {
         isStarted = true;
         try {
 
-            //发送处理完毕的消息
-            Message msg = new Message();
-            msg.what = THREAD_FINISHED;
-            mHandler.sendMessage(msg);
-
         } catch (Exception e) {
             e.printStackTrace();
             //TODO:建议这里发送下载失败的消息
         } finally {
         }
     }
-
-
-    public void setHandler(Handler mHandler) {
-        this.mHandler = mHandler;
-    }
-
 }

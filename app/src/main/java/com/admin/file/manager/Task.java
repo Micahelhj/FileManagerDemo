@@ -320,7 +320,6 @@ public abstract class Task<P, R> implements Runnable, Observer, TaskAction<P, R>
     public void shutDownExecute() {
     }
 
-    ;
 
     public R cacheData(P parameter) {
         return result;
