@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 项目名称：FileManagerDemo
@@ -29,7 +31,14 @@ public class ABNLogManager {
         return application;
     }
 
+    //创建一个可重用固定线程数的线程池
+    private ExecutorService pool = Executors.newSingleThreadExecutor();
+
     private String CURR_INSTALL_LOG_NAME = "Log.txt"; // 如果当前的日志写在内存中，记录当前的日志文件名称
+
+    private void add(String dir, InputStream data){
+        //pool.execute(new LogThread());
+    }
 
     /**
      * 记录日志到本地
