@@ -24,9 +24,13 @@ public class ABNFileManager {
      */
     private static String downloadRootDir = null;
     /**
-     * 默认APP根目录.
+     * 默认崩溃日志文件目录
      */
-    private static String crachloadRootDir = null;
+    private static String crachLoadRootDir = null;
+    /**
+     * 默认日常日志文件目录
+     */
+    private static String normalLoadRootDir = null;
 
     /**
      * 默认下载图片文件目录.
@@ -60,10 +64,12 @@ public class ABNFileManager {
         String fileDownloadPath = ABNFileConfig.getDownload_file_dir() + File.separator;
         //默认缓存目录.
         String cacheDownloadPath = ABNFileConfig.getCache_dir() + File.separator;
-        //默认CRACH目录.
-        String crachDownloadPath = ABNFileConfig.getCrach_dir() + File.separator;
+        //默认CRACH LOG目录.
+        String crachLogDownloadPath = ABNFileConfig.getLog_dir() + File.separator + ABNFileConfig.getCrach_dir() + File.separator;
+        //默认NORMAL LOG目录.
+        String normalLogDownloadPath = ABNFileConfig.getLog_dir() + File.separator + ABNFileConfig.getNormal_dir() + File.separator;
         //默认DB目录.
-        String dbDownloadPath = ABNFileConfig.DB_DIR + File.separator;
+        String dbDownloadPath = ABNFileConfig.getDbDir() + File.separator;
         try {
             boolean isHaveSDcard = ABSDCardUtils.isAvailable();
             if (isHaveSDcard) {
@@ -87,11 +93,17 @@ public class ABNFileManager {
                 }
                 cacheDownloadDir = cacheDownloadDirFile.getPath();
                 /****************************************崩溃日志文件存储地址*****************************************/
-                File crachDownloadDirFile = new File(rootFile.getAbsolutePath() + "/" + crachDownloadPath);
+                File crachDownloadDirFile = new File(rootFile.getAbsolutePath() + "/" + crachLogDownloadPath);
                 if (!crachDownloadDirFile.exists()) {
                     crachDownloadDirFile.mkdirs();
                 }
-                crachloadRootDir = crachDownloadDirFile.getPath();
+                crachLoadRootDir = crachDownloadDirFile.getPath();
+                /****************************************日常日志文件存储地址*****************************************/
+                File normalDownloadDirFile = new File(rootFile.getAbsolutePath() + "/" + normalLogDownloadPath);
+                if (!crachDownloadDirFile.exists()) {
+                    crachDownloadDirFile.mkdirs();
+                }
+                normalLoadRootDir = normalDownloadDirFile.getPath();
                 /****************************************图片文件存储地址*******************************************/
                 File imageDownloadDirFile = new File(rootFile.getAbsolutePath() + "/" + imageDownloadPath);
                 if (!imageDownloadDirFile.exists()) {
@@ -179,11 +191,24 @@ public class ABNFileManager {
      * @param context the context
      * @return the crach download dir
      */
-    public static String getCrachDownloadDir(Context context) {
-        if (crachloadRootDir == null) {
+    public static String getCrachLogDownloadDir(Context context) {
+        if (crachLoadRootDir == null) {
             initFileDir(context);
         }
-        return crachloadRootDir;
+        return crachLoadRootDir;
+    }
+
+    /**
+     * Gets the crach download dir.
+     *
+     * @param context the context
+     * @return the crach download dir
+     */
+    public static String getNormalLogDownloadDir(Context context) {
+        if (normalLoadRootDir == null) {
+            initFileDir(context);
+        }
+        return normalLoadRootDir;
     }
 
 
@@ -356,7 +381,8 @@ public class ABNFileManager {
     public static void cleanExternalData(Context context, String... filePath) {
         cleanCustomCache(getCacheDownloadDir(context),
                 getDbDownloadDir(context),
-                getCrachDownloadDir(context),
+                getCrachLogDownloadDir(context),
+                getNormalLogDownloadDir(context),
                 getImageDownloadDir(context),
                 getFileDownloadDir(context));
         for (String fp : filePath) {
@@ -401,7 +427,7 @@ public class ABNFileManager {
      * @param crachsFileName
      */
     public void deleteFileInCrachs(Context context, String crachsFileName) {
-        ABNFileUtil.deleteFile(getCrachDownloadDir(context) + "/" + crachsFileName);
+        ABNFileUtil.deleteFile(getCrachLogDownloadDir(context) + "/" + crachsFileName);
     }
 
     /**
@@ -471,6 +497,7 @@ public class ABNFileManager {
 
     /**
      * 根据路径+文件名得到一个file
+     * 文件或目录不存在时,创建目录和文件.
      *
      * @param filePathName
      * @return
@@ -493,6 +520,7 @@ public class ABNFileManager {
 
     /**
      * 根据路径和文件名得到一个file
+     * 文件或目录不存在时,创建目录和文件.
      *
      * @param filePath file路径
      * @param fileName file名

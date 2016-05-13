@@ -745,7 +745,6 @@ public class ABNFileUtil {
      * FileOutputStream
      */
     public static boolean writeFile(String filePath, InputStream stream, boolean append) {
-
         return writeFile(filePath != null ? new File(filePath) : null, stream,
                 append);
     }
@@ -1527,71 +1526,6 @@ public class ABNFileUtil {
         }
         return null;
     }
-
-
-    /**
-     * 打开多媒体文件.
-     *
-     * @param context 上下文
-     * @param file    多媒体文件
-     */
-    public static void playSound(Context context, String file) {
-
-        playSound(context, new File(file));
-    }
-
-
-    /**
-     * 打开多媒体文件.
-     *
-     * @param context 上下文
-     * @param file    多媒体文件
-     */
-    public static void playSound(Context context, File file) {
-
-        try {
-            // 调用系统程序打开文件.
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //intent.setClassName("com.android.music", "com.android.music.MediaPlaybackActivity");
-            intent.setDataAndType(Uri.fromFile(file), "audio/*");
-            context.startActivity(intent);
-        } catch (Exception ex) {
-            Toast.makeText(context, "打开失败.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    /**
-     * 打开视频文件.
-     *
-     * @param context 上下文
-     * @param file    视频文件
-     */
-    public static void playVideo(Context context, String file) {
-
-        playVideo(context, new File(file));
-    }
-
-
-    /**
-     * 打开视频文件.
-     *
-     * @param context 上下文
-     * @param file    视频文件
-     */
-    public static void playVideo(Context context, File file) {
-        try {
-            // 调用系统程序打开文件.
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(Uri.fromFile(file), "video/*");
-            context.startActivity(intent);
-        } catch (Exception ex) {
-            Toast.makeText(context, "打开失败.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     /**
      * 文件重命名

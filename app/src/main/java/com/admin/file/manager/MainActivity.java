@@ -1,5 +1,6 @@
 package com.admin.file.manager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,11 +22,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView tv5 = (TextView) findViewById(R.id.btn_5);
 
 
-        File f0 = wd.getFile(ABNFileManager.getCacheDownloadDir(this), "f0.txt");
-        File f1 = wd.getFile(ABNFileManager.getCrachDownloadDir(this), "f1.txt");
-        File f2 = wd.getFile(ABNFileManager.getDbDownloadDir(this), "f2.txt");
-        File f3= wd.getFile(ABNFileManager.getFileDownloadDir(this), "f3.txt");
-        File f4 = wd.getFile(ABNFileManager.getImageDownloadDir(this), "f4.txt");
+        File f0 = ABNFileManager.getFile(ABNFileManager.getCacheDownloadDir(this), "f0.txt");
+        File f10 = ABNFileManager.getFile(ABNFileManager.getNormalLogDownloadDir(this), "f1.txt");
+        File f11 = ABNFileManager.getFile(ABNFileManager.getCrachLogDownloadDir(this), "f1.txt");
+        File f2 = ABNFileManager.getFile(ABNFileManager.getDbDownloadDir(this), "f2.txt");
+        File f3 = ABNFileManager.getFile(ABNFileManager.getFileDownloadDir(this), "f3.txt");
+        File f4 = ABNFileManager.getFile(ABNFileManager.getImageDownloadDir(this), "f4.txt");
+
+        ABNLogManager.getInstance(this).recordLog2Native("cals","asdasdasdasdsad");
+        Intent stateService = new Intent(this, WdLogService.class);
+        startService(stateService);
     }
 
     @Override
@@ -35,10 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ABNFileManager.cleanExternalData(this);
                 break;
             case R.id.btn_1:
+                ABLogUtil.i("tyutyutyutu");
                 break;
             case R.id.btn_2:
+                ABLogUtil.i("asdaaaaaaaaa");
                 break;
             case R.id.btn_3:
+                ABLogUtil.i("iopiopiopipi");
                 break;
             default:
                 break;

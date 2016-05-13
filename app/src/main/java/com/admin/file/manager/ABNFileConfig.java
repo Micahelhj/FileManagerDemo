@@ -47,12 +47,19 @@ public class ABNFileConfig {
     /**
      * APP异常文件存储目录.
      */
+    private static String log_dir = "logs";
+    /**
+     * APP异常文件存储目录.
+     */
     private static String crach_dir = "crachs";
-
+    /**
+     * APP异常文件存储目录.
+     */
+    private static String normal_dir = "normals";
     /**
      * DB目录.
      */
-    public static String DB_DIR = "db";
+    private static String DB_DIR = "db";
 
     /**
      * =================================================================================================
@@ -62,16 +69,16 @@ public class ABNFileConfig {
         return databases;
     }
 
-    public void setDatabases(String databases) {
-        this.databases = databases;
+    public static void setDatabases(String databases) {
+        ABNFileConfig.databases = databases;
     }
 
     public static String getShared_prefs() {
         return shared_prefs;
     }
 
-    public void setShared_prefs(String shared_prefs) {
-        this.shared_prefs = shared_prefs;
+    public static void setShared_prefs(String shared_prefs) {
+        ABNFileConfig.shared_prefs = shared_prefs;
     }
 
     public static String getDownload_root_dir() {
@@ -106,12 +113,28 @@ public class ABNFileConfig {
         ABNFileConfig.cache_dir = cache_dir;
     }
 
+    public static String getLog_dir() {
+        return log_dir;
+    }
+
+    public static void setLog_dir(String log_dir) {
+        ABNFileConfig.log_dir = log_dir;
+    }
+
     public static String getCrach_dir() {
         return crach_dir;
     }
 
     public static void setCrach_dir(String crach_dir) {
         ABNFileConfig.crach_dir = crach_dir;
+    }
+
+    public static String getNormal_dir() {
+        return normal_dir;
+    }
+
+    public static void setNormal_dir(String normal_dir) {
+        ABNFileConfig.normal_dir = normal_dir;
     }
 
     public static String getDbDir() {
