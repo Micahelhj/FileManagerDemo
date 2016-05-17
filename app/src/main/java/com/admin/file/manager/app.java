@@ -1,6 +1,7 @@
 package com.admin.file.manager;
 
 import android.app.Application;
+import android.content.Intent;
 
 /**
  * 项目名称：FileManagerDemo
@@ -15,6 +16,7 @@ public class app extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ABNFileManager.initFileDir(this);
+        ABFileManager.initFileDir(this);
+        startService(new Intent(this,ABLogManagerSerVice.class));
     }
 }

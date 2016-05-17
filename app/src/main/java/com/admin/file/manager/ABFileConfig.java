@@ -15,7 +15,7 @@
  */
 package com.admin.file.manager;
 
-public class ABNFileConfig {
+public class ABFileConfig {
     /**
      * 手机内部存储的数据库文件
      */
@@ -70,7 +70,7 @@ public class ABNFileConfig {
     }
 
     public static void setDatabases(String databases) {
-        ABNFileConfig.databases = databases;
+        ABFileConfig.databases = databases;
     }
 
     public static String getShared_prefs() {
@@ -78,7 +78,7 @@ public class ABNFileConfig {
     }
 
     public static void setShared_prefs(String shared_prefs) {
-        ABNFileConfig.shared_prefs = shared_prefs;
+        ABFileConfig.shared_prefs = shared_prefs;
     }
 
     public static String getDownload_root_dir() {
@@ -86,7 +86,7 @@ public class ABNFileConfig {
     }
 
     public static void setDownload_root_dir(String download_root_dir) {
-        ABNFileConfig.download_root_dir = download_root_dir;
+        ABFileConfig.download_root_dir = download_root_dir;
     }
 
     public static String getDownload_image_dir() {
@@ -94,7 +94,7 @@ public class ABNFileConfig {
     }
 
     public static void setDownload_image_dir(String download_image_dir) {
-        ABNFileConfig.download_image_dir = download_image_dir;
+        ABFileConfig.download_image_dir = download_image_dir;
     }
 
     public static String getDownload_file_dir() {
@@ -102,7 +102,7 @@ public class ABNFileConfig {
     }
 
     public static void setDownload_file_dir(String download_file_dir) {
-        ABNFileConfig.download_file_dir = download_file_dir;
+        ABFileConfig.download_file_dir = download_file_dir;
     }
 
     public static String getCache_dir() {
@@ -110,7 +110,7 @@ public class ABNFileConfig {
     }
 
     public static void setCache_dir(String cache_dir) {
-        ABNFileConfig.cache_dir = cache_dir;
+        ABFileConfig.cache_dir = cache_dir;
     }
 
     public static String getLog_dir() {
@@ -118,7 +118,7 @@ public class ABNFileConfig {
     }
 
     public static void setLog_dir(String log_dir) {
-        ABNFileConfig.log_dir = log_dir;
+        ABFileConfig.log_dir = log_dir;
     }
 
     public static String getCrach_dir() {
@@ -126,7 +126,7 @@ public class ABNFileConfig {
     }
 
     public static void setCrach_dir(String crach_dir) {
-        ABNFileConfig.crach_dir = crach_dir;
+        ABFileConfig.crach_dir = crach_dir;
     }
 
     public static String getNormal_dir() {
@@ -134,7 +134,7 @@ public class ABNFileConfig {
     }
 
     public static void setNormal_dir(String normal_dir) {
-        ABNFileConfig.normal_dir = normal_dir;
+        ABFileConfig.normal_dir = normal_dir;
     }
 
     public static String getDbDir() {

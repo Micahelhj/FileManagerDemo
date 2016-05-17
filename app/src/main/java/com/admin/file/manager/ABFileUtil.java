@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ABNFileUtil {
+public class ABFileUtil {
 
     /**
      * 剩余空间大于200M才使用SD缓存.
@@ -71,7 +72,7 @@ public class ABNFileUtil {
     public static Bitmap getBitmapFromSrc(String src) {
         Bitmap bit = null;
         try {
-            bit = BitmapFactory.decodeStream(ABNFileUtil.class.getResourceAsStream(src));
+            bit = BitmapFactory.decodeStream(ABFileUtil.class.getResourceAsStream(src));
         } catch (Exception e) {
             ABLogUtil.d("获取图片异常：" + e.getMessage());
         }
@@ -584,7 +585,7 @@ public class ABNFileUtil {
     public static final String URI_TYPE_FILE = "file";
 
 
-    private ABNFileUtil() {
+    private ABFileUtil() {
         throw new AssertionError();
     }
 
@@ -648,6 +649,7 @@ public class ABNFileUtil {
         try {
             makeDirs(filePath);
             fileWriter = new FileWriter(filePath, append);
+//            fileWriter.write("\r\n" );//换行
             fileWriter.write(content);
             return true;
         } catch (IOException e) {
@@ -916,7 +918,7 @@ public class ABNFileUtil {
 
     /**
      * get file name from path, include suffix
-     * <p>
+     * <p/>
      * <pre>
      *      getFileName(null)               =   null
      *      getFileName("")                 =   ""
@@ -948,7 +950,7 @@ public class ABNFileUtil {
 
     /**
      * get folder name from path
-     * <p>
+     * <p/>
      * <pre>
      *      getFolderName(null)               =   null
      *      getFolderName("")                 =   ""
@@ -982,7 +984,7 @@ public class ABNFileUtil {
 
     /**
      * get suffix of file from path
-     * <p>
+     * <p/>
      * <pre>
      *      getFileExtension(null)               =   ""
      *      getFileExtension("")                 =   ""
@@ -1027,7 +1029,6 @@ public class ABNFileUtil {
         if (TextUtils.isEmpty(folderName)) {
             return false;
         }
-
         File folder = new File(folderName);
         return (folder.exists() && folder.isDirectory())
                 ? true
@@ -1545,6 +1546,17 @@ public class ABNFileUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String inputStream2String(InputStream in) throws IOException {
+        StringBuffer out = new StringBuffer();
+        byte[] b = new byte[4096];
+        int n;
+        while ((n = in.read(b)) != -1) {
+            out.append(new String(b, 0, n));
+        }
+        Log.i("String的长度", new Integer(out.length()).toString());
+        return out.toString();
     }
 
     /**

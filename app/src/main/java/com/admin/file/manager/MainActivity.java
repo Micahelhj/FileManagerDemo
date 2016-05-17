@@ -1,6 +1,5 @@
 package com.admin.file.manager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,22 +21,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView tv5 = (TextView) findViewById(R.id.btn_5);
 
 
-        File f0 = ABNFileManager.getFile(ABNFileManager.getCacheDownloadDir(this), "f0.txt");
-        File f10 = ABNFileManager.getFile(ABNFileManager.getNormalLogDownloadDir(this), "f1.txt");
-        File f11 = ABNFileManager.getFile(ABNFileManager.getCrachLogDownloadDir(this), "f1.txt");
-        File f2 = ABNFileManager.getFile(ABNFileManager.getDbDownloadDir(this), "f2.txt");
-        File f3 = ABNFileManager.getFile(ABNFileManager.getFileDownloadDir(this), "f3.txt");
-        File f4 = ABNFileManager.getFile(ABNFileManager.getImageDownloadDir(this), "f4.txt");
-
-//        ABNLogManager.getInstance(this).recordLog2Native("cals","asdasdasdasdsad");
-//        startService(stateService);
+        File f0 = ABFileManager.getFile(ABFileManager.getCacheDownloadDir(this), "f0.txt");
+        File f10 = ABFileManager.getFile(ABFileManager.getNormalLogDownloadDir(this), "f1.txt");
+//        File f11 = ABFileManager.getFile(ABFileManager.getCrachLogDownloadDir(this), "f1.txt");
+        File f2 = ABFileManager.getFile(ABFileManager.getDbDownloadDir(this), "f2.txt");
+        File f3 = ABFileManager.getFile(ABFileManager.getFileDownloadDir(this), "f3.txt");
+        File f4 = ABFileManager.getFile(ABFileManager.getImageDownloadDir(this), "f4.txt");
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_0:
-                ABNFileManager.cleanExternalData(this);
+                ABFileManager.cleanExternalData(this);
                 break;
             case R.id.btn_1:
                 ABLogUtil.i("tyutyutyutu");
@@ -47,6 +43,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_3:
                 ABLogUtil.i("iopiopiopipi");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
+                ABLogManager.recordLog("cals","asdasdasdasdsad");
                 break;
             default:
                 break;

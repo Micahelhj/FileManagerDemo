@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  * 修改时间：2016/2/4 14:45
  * 修改备注：
  */
-public class ABNFileManager {
+public class ABFileManager {
     /**
      * 默认APP根目录.
      */
@@ -59,17 +59,17 @@ public class ABNFileManager {
      */
     public static void initFileDir(Context context) {
         //默认下载图片文件目录.
-        String imageDownloadPath = ABNFileConfig.getDownload_image_dir() + File.separator;
+        String imageDownloadPath = ABFileConfig.getDownload_image_dir() + File.separator;
         //默认下载文件目录.
-        String fileDownloadPath = ABNFileConfig.getDownload_file_dir() + File.separator;
+        String fileDownloadPath = ABFileConfig.getDownload_file_dir() + File.separator;
         //默认缓存目录.
-        String cacheDownloadPath = ABNFileConfig.getCache_dir() + File.separator;
+        String cacheDownloadPath = ABFileConfig.getCache_dir() + File.separator;
         //默认CRACH LOG目录.
-        String crachLogDownloadPath = ABNFileConfig.getLog_dir() + File.separator + ABNFileConfig.getCrach_dir() + File.separator;
+        String crachLogDownloadPath = ABFileConfig.getLog_dir() + File.separator + ABFileConfig.getCrach_dir() + File.separator;
         //默认NORMAL LOG目录.
-        String normalLogDownloadPath = ABNFileConfig.getLog_dir() + File.separator + ABNFileConfig.getNormal_dir() + File.separator;
+        String normalLogDownloadPath = ABFileConfig.getLog_dir() + File.separator + ABFileConfig.getNormal_dir() + File.separator;
         //默认DB目录.
-        String dbDownloadPath = ABNFileConfig.getDbDir() + File.separator;
+        String dbDownloadPath = ABFileConfig.getDbDir() + File.separator;
         try {
             boolean isHaveSDcard = ABSDCardUtils.isAvailable();
             if (isHaveSDcard) {
@@ -131,14 +131,14 @@ public class ABNFileManager {
     }
 
     /**
-     * Gets the download root dir.
+     * Gets the  RootDir.
      *
      * @param context the context
      * @return the download root dir
      */
     public static String getDownloadRootDir(Context context) {
         if (downloadRootDir == null) {
-            initFileDir(context);
+            initFileDir(context.getApplicationContext());
         }
         return downloadRootDir;
     }
@@ -151,8 +151,8 @@ public class ABNFileManager {
      * @return the image download dir
      */
     public static String getImageDownloadDir(Context context) {
-        if (downloadRootDir == null) {
-            initFileDir(context);
+        if (downloadRootDir == null && context != null) {
+            initFileDir(context.getApplicationContext());
         }
         return imageDownloadDir;
     }
@@ -165,8 +165,8 @@ public class ABNFileManager {
      * @return the file download dir
      */
     public static String getFileDownloadDir(Context context) {
-        if (downloadRootDir == null) {
-            initFileDir(context);
+        if (downloadRootDir == null && context != null) {
+            initFileDir(context.getApplicationContext());
         }
         return fileDownloadDir;
     }
@@ -179,8 +179,8 @@ public class ABNFileManager {
      * @return the cache download dir
      */
     public static String getCacheDownloadDir(Context context) {
-        if (downloadRootDir == null) {
-            initFileDir(context);
+        if (downloadRootDir == null && context != null) {
+            initFileDir(context.getApplicationContext());
         }
         return cacheDownloadDir;
     }
@@ -192,8 +192,8 @@ public class ABNFileManager {
      * @return the crach download dir
      */
     public static String getCrachLogDownloadDir(Context context) {
-        if (crachLoadRootDir == null) {
-            initFileDir(context);
+        if (crachLoadRootDir == null && context != null) {
+            initFileDir(context.getApplicationContext());
         }
         return crachLoadRootDir;
     }
@@ -205,8 +205,8 @@ public class ABNFileManager {
      * @return the crach download dir
      */
     public static String getNormalLogDownloadDir(Context context) {
-        if (normalLoadRootDir == null) {
-            initFileDir(context);
+        if (normalLoadRootDir == null && context != null) {
+            initFileDir(context.getApplicationContext());
         }
         return normalLoadRootDir;
     }
@@ -219,8 +219,8 @@ public class ABNFileManager {
      * @return the db download dir
      */
     public static String getDbDownloadDir(Context context) {
-        if (downloadRootDir == null) {
-            initFileDir(context);
+        if (downloadRootDir == null && context != null) {
+            initFileDir(context.getApplicationContext());
         }
         return dbDownloadDir;
     }
@@ -244,14 +244,14 @@ public class ABNFileManager {
      */
     public static void cleanDatabases(Context context) {
         deleteFilesByDirectory(new File(context.getFilesDir().getPath()
-                + context.getPackageName() + "/" + ABNFileConfig.getDatabases()));
+                + context.getPackageName() + "/" + ABFileConfig.getDatabases()));
     }
 
     /**
      * 清除本应用所有数据库(/data/data/com.xxx.xxx/databases)
      */
     public static void cleanDB() {
-        deleteFilesByDirectory(new File(ABNFileConfig.getDbDir() + "/" + ABNFileConfig.getDatabases()));
+        deleteFilesByDirectory(new File(ABFileConfig.getDbDir() + "/" + ABFileConfig.getDatabases()));
     }
 
     /**
@@ -261,7 +261,7 @@ public class ABNFileManager {
      */
     public static void cleanSharedPreference(Context context) {
         deleteFilesByDirectory(new File(context.getFilesDir().getPath()
-                + context.getPackageName() + "/" + ABNFileConfig.getShared_prefs()));
+                + context.getPackageName() + "/" + ABFileConfig.getShared_prefs()));
     }
 
     /**
@@ -352,21 +352,21 @@ public class ABNFileManager {
      * 清除image_dir路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
      */
     public static void cleanExternalImages() {
-        deleteFilesByDirectory(new File(ABNFileConfig.getDownload_image_dir()));
+        deleteFilesByDirectory(new File(ABFileConfig.getDownload_image_dir()));
     }
 
     /**
      * 清除file_dir路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
      */
     public static void cleanExternalFiles() {
-        deleteFilesByDirectory(new File(ABNFileConfig.getDownload_file_dir()));
+        deleteFilesByDirectory(new File(ABFileConfig.getDownload_file_dir()));
     }
 
     /**
      * 清除root_dir路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除
      */
     public static void cleanExternalFile() {
-        deleteFilesByDirectory(new File(ABNFileConfig.getDownload_root_dir()));
+        deleteFilesByDirectory(new File(ABFileConfig.getDownload_root_dir()));
     }
 
     /**
@@ -397,7 +397,7 @@ public class ABNFileManager {
      * @param dbFileName
      */
     public void deleteFileInDbs(Context context, String dbFileName) {
-        ABNFileUtil.deleteFile(getDbDownloadDir(context) + "/" + dbFileName);
+        ABFileUtil.deleteFile(getDbDownloadDir(context) + "/" + dbFileName);
     }
 
     /**
@@ -407,7 +407,7 @@ public class ABNFileManager {
      * @param imageFileName
      */
     public void deleteFileInImages(Context context, String imageFileName) {
-        ABNFileUtil.deleteFile(getImageDownloadDir(context) + "/" + imageFileName);
+        ABFileUtil.deleteFile(getImageDownloadDir(context) + "/" + imageFileName);
     }
 
     /**
@@ -417,7 +417,7 @@ public class ABNFileManager {
      * @param fileName
      */
     public void deleteFileInFiles(Context context, String fileName) {
-        ABNFileUtil.deleteFile(getFileDownloadDir(context) + "/" + fileName);
+        ABFileUtil.deleteFile(getFileDownloadDir(context) + "/" + fileName);
     }
 
     /**
@@ -427,7 +427,7 @@ public class ABNFileManager {
      * @param crachsFileName
      */
     public void deleteFileInCrachs(Context context, String crachsFileName) {
-        ABNFileUtil.deleteFile(getCrachLogDownloadDir(context) + "/" + crachsFileName);
+        ABFileUtil.deleteFile(getCrachLogDownloadDir(context) + "/" + crachsFileName);
     }
 
     /**
@@ -437,7 +437,7 @@ public class ABNFileManager {
      * @param cachesFileName
      */
     public void deleteFileInCaches(Context context, String cachesFileName) {
-        ABNFileUtil.deleteFile(getCacheDownloadDir(context) + "/" + cachesFileName);
+        ABFileUtil.deleteFile(getCacheDownloadDir(context) + "/" + cachesFileName);
     }
     /**
      * ===========================================文件保存、创建  数据保存==================================================
@@ -546,6 +546,31 @@ public class ABNFileManager {
     }
 
     /**
+     * 根据路径和文件名得到一个file 文件或目录不存在时,创建目录和文件.
+     *
+     * @param fileName file名
+     * @return
+     */
+    public static File getDonwLoadFile(Context context, String fileName) {
+        String filePath = getFileDownloadDir(context);
+        //path表示你所创建文件的路径
+        File f = new File(filePath);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        // fileName表示你创建的文件名；
+        File file = new File(f, fileName);
+        file.setLastModified(System.currentTimeMillis());
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
+    /**
      * ==================================================文件大小  内存大小相关=============================================
      */
 
@@ -632,7 +657,24 @@ public class ABNFileManager {
         }
         return -1;
     }
+
     /**
-     * ==========================================================================================================
+     * 获取手机当前位置可用空间大小
+     *
+     * @return
      */
+
+    public static long getAvailableMemorySize(Context context) {
+        try {
+            if (ABSDCardUtils.isAvailable()) {
+                StatFs statFs = new StatFs(getDownloadRootDir(context));
+                long blockSize = statFs.getBlockSize();
+                long availableBlocks = statFs.getAvailableBlocks();
+                return availableBlocks * blockSize;
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return -1;
+    }
 }
