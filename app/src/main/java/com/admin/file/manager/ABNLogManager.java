@@ -281,7 +281,6 @@ public class ABNLogManager {
     public static boolean writeFile(String filePath, String content, boolean append) {
         FileOutputStream outputStream = null;
         OutputStreamWriter write = null;
-        Date date = new Date();
         if (TextUtils.isEmpty(content)) {
             return false;
         }
@@ -300,7 +299,6 @@ public class ABNLogManager {
             System.out.println("写文件内容操作出错");
             e.printStackTrace();
         } finally {
-            date = null;
             try {
                 if (write != null)
                     write.close();
