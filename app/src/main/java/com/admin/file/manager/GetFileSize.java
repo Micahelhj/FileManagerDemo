@@ -11,8 +11,8 @@ package com.admin.file.manager;
  */
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.io.FileInputStream;
+import java.text.DecimalFormat;
 
 public class GetFileSize {
     public long getFileSizes(File f) throws Exception {//取得文件大小

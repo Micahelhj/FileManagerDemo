@@ -1,5 +1,11 @@
 package com.admin.file.manager;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.os.Build;
+import android.text.ClipboardManager;
+
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
@@ -10,12 +16,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.os.Build;
-import android.text.ClipboardManager;
 
 /**
  * 项目名称：AdminLibs 类描述： ABIOUtil 创建时间：2016/2/4 14:45 修改人：Michael 修改时间：2016/2/4 14:45 修改备注：

@@ -1,5 +1,18 @@
 package com.admin.file.manager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Environment;
+import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,19 +29,6 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Environment;
-import android.os.IBinder;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.util.Log;
 
 /**
  * 项目名称：FileManagerDemo

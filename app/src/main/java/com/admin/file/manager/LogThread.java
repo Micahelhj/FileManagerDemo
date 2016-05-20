@@ -2,11 +2,6 @@ package com.admin.file.manager;
 
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-
-import java.io.File;
-import java.io.InputStream;
 
 /**
  * 项目名称：FileManagerDemo

@@ -23,7 +23,6 @@
         </activity>
         <service android:name=".WdLogService"></service>
         <!--suppress AndroidDomInspection -->
-        <service android:name=".ABLogManagerSerVice"></service>
     </application>
 
 </manifest>

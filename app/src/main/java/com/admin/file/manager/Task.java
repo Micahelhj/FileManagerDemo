@@ -1,15 +1,12 @@
 package com.admin.file.manager;
 
-import java.util.HashMap;
-
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-
-
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
 public abstract class Task<P, R> implements Runnable, Observer, TaskAction<P, R> {
 
