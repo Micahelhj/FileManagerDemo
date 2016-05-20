@@ -16,6 +16,6 @@ public class app extends Application {
     public void onCreate() {
         super.onCreate();
         ABFileManager.initFileDir(this);
-        ABLogManager.initLogManager(this);
+        ABNLogManager.initLogManager(this);
     }
 }

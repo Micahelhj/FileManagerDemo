@@ -36,31 +36,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ABFileManager.cleanExternalData(this);
                 break;
             case R.id.btn_1:
-                for (int i = 0; i < 1000; i++) {
+                int a = 0;
+                while (true) {
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    ABLogManager.recordLog("cals","阿斯达岁的");
+                    ABNLogManager.recordLog("cals", "阿斯达岁的" + a++);
                 }
-                break;
+//                break;
             case R.id.btn_2:
                 ABLogUtil.i("asdaaaaaaaaa");
                 break;
             case R.id.btn_3:
                 ABLogUtil.i("iopiopiopipi");
-                ABLogManager.recordLog("cals","asdasdasdasdsad");
-                ABLogManager.recordLog("cals","asdasdasdasdsad");
-                ABLogManager.recordLog("cals","阿斯顿发苏打水一点");
-                ABLogManager.recordLog("cals","asdasdasdasdsad");
-                ABLogManager.recordLog("cals","asdasdasdasdsad");
-                ABLogManager.recordLog("cals","爱上大飒飒的撒");
-                ABLogManager.recordLog("asdadasd","asdasdasdasdsad");
-                ABLogManager.recordLog("cals","阿斯达岁的");
-                ABLogManager.recordLog("qweqwe","asdasdasdasdsad");
-                ABLogManager.recordLog("cals","爱上大萨达四大四");
-                ABLogManager.recordLog("123123","asdasdasdasdsad");
+                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABNLogManager.recordLog("cals", "阿斯顿发苏打水一点");
+                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABNLogManager.recordLog("cals", "爱上大飒飒的撒");
+                ABNLogManager.recordLog("asdadasd", "asdasdasdasdsad");
+                ABNLogManager.recordLog("cals", "阿斯达岁的");
+                ABNLogManager.recordLog("qweqwe", "asdasdasdasdsad");
+                ABNLogManager.recordLog("cals", "爱上大萨达四大四");
+                ABNLogManager.recordLog("123123", "asdasdasdasdsad");
                 break;
             default:
                 break;

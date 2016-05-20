@@ -1,13 +1,9 @@
 package com.admin.file.manager;
 
 import android.content.Context;
-import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.adutils.ABTextUtil;
-import com.adutils.file.ABStreamUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -28,6 +24,8 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,10 +37,10 @@ import static java.lang.Thread.sleep;
  * @Description: TODO(日志管理工具)
  * @date 2016年5月18日 上午10:52:19
  */
-public class ABLogManager {
+public class ABNLogManager {
     private static Context context;
     private static final String TAG = "ABLogManager";
-    private static LinkedList queue = null;
+    private static BlockingQueue<ABNLogEntity> queue = null;
     private static final int MEMORY_LOG_FILE_MAX_SIZE = 10 * 1024 * 1024; // 内存中日志文件最大值，10M
     private static final int SDCARD_LOG_FILE_SAVE_DAYS = 7; // sd卡中日志文件的最多保存天数
     private static String LOG_PATH_MEMORY_DIR; // 日志文件在内存中的路径(日志文件在安装目录中的路径)
@@ -94,7 +92,7 @@ public class ABLogManager {
      * 初始化sing线程池并加入一个线程
      */
     private static void initPoolWorker() {
-        queue = new LinkedList();
+        queue = new ArrayBlockingQueue<ABNLogEntity>(10);
         pool = Executors.newSingleThreadExecutor();
         pool.execute(new PoolWorker());
     }
@@ -108,8 +106,11 @@ public class ABLogManager {
         if (queue == null || pool == null)
             initPoolWorker();
         synchronized (queue) {
-            queue.addLast(t);
-            queue.notify();
+            try {
+                queue.put(t);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -120,35 +121,19 @@ public class ABLogManager {
         public void run() {
             ABNLogEntity firstLogEntity;
             while (true) {
-                synchronized (queue) {
-                    while (queue.isEmpty()) {
-                        try {
-                            queue.wait();
-                        } catch (InterruptedException ignored) {
-                        }
-                    }
+                try {
+                    //将此处的睡眠时间分别改为100和1000，观察运行结果
+                    Thread.sleep(1000);
+                    System.out.println(Thread.currentThread().getName() + "准备取数据!");
+                    firstLogEntity = queue.take();
+                    System.out.println(Thread.currentThread().getName() + "已经取走数据，" + "队列目前有" + queue.size() + "个数据");
                     checkLogSize();
                     deleteExpiredLog();
                     deleteMemoryExpiredLog();
-                    ABLogUtil.i("queue.size========" + queue.size());
-                    try {
-                        sleep(1000);// 休眠，创建文件，然后处理文件，不然该文件还没创建，会影响文件删除
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    firstLogEntity = (ABNLogEntity) queue.removeFirst();
-                    InputStream in_withcode = null;
-                    try {
-                        in_withcode = new ByteArrayInputStream(firstLogEntity.getData().getBytes("UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-//                    writeFile(LOG_PATH_MEMORY_DIR + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, in_withcode, true);
-                    writeFile(LOG_PATH_MEMORY_DIR+ File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
-                }
-                try {
-                    run();
-                } catch (RuntimeException e) {
+                    ABLogUtil.i("queue.size========" + queue.size()+"-======="+firstLogEntity.getData());
+                    writeFile(ABFileManager.getNormalLogDownloadDir(context) + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -327,26 +312,6 @@ public class ABLogManager {
             }
         }
         return true;
-    }
-
-    private static final String date_format = "yyyy-MM-dd HH:mm:ss";
-    private static ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>();
-
-    public static DateFormat getDateFormat() {
-        DateFormat df = threadLocal.get();
-        if (df == null) {
-            df = new SimpleDateFormat(date_format);
-            threadLocal.set(df);
-        }
-        return df;
-    }
-
-    public static String formatDate(Date date) throws ParseException {
-        return getDateFormat().format(date);
-    }
-
-    public static Date parse(String strDate) throws ParseException {
-        return getDateFormat().parse(strDate);
     }
 
     /**
