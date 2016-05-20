@@ -309,7 +309,7 @@ public class ABLogManager {
             write.write("\r\n");//换行
             write.write(content);
             write.write("\r\n");//换行
-            write.write("----------------------------------------------------------------");//换行
+            write.write("----------------------------------------------------------------");
             write.write("\r\n");//换行
         } catch (Exception e) {
             System.out.println("写文件内容操作出错");
