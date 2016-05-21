@@ -130,7 +130,6 @@ public class ABLogManager {
                     checkLogSize();
                     deleteExpiredLog();
                     deleteMemoryExpiredLog();
-                    ABLogUtil.i("queue.size========" + queue.size());
                     try {
                         sleep(1000);// 休眠，创建文件，然后处理文件，不然该文件还没创建，会影响文件删除
                     } catch (InterruptedException e) {
@@ -144,7 +143,7 @@ public class ABLogManager {
                         e.printStackTrace();
                     }
 //                    writeFile(LOG_PATH_MEMORY_DIR + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, in_withcode, true);
-                    writeFile(LOG_PATH_MEMORY_DIR+ File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
+                    writeFile(LOG_PATH_MEMORY_DIR + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
                 }
                 try {
                     run();

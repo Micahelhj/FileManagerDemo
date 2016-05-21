@@ -5,7 +5,6 @@ import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,22 +13,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static java.lang.Thread.sleep;
 
 /**
  * @author Michael_hj
@@ -124,13 +118,10 @@ public class ABNLogManager {
                 try {
                     //将此处的睡眠时间分别改为100和1000，观察运行结果
                     Thread.sleep(1000);
-                    System.out.println(Thread.currentThread().getName() + "准备取数据!");
                     firstLogEntity = queue.take();
-                    System.out.println(Thread.currentThread().getName() + "已经取走数据，" + "队列目前有" + queue.size() + "个数据");
                     checkLogSize();
                     deleteExpiredLog();
                     deleteMemoryExpiredLog();
-                    ABLogUtil.i("queue.size========" + queue.size()+"-======="+firstLogEntity.getData());
                     writeFile(ABFileManager.getNormalLogDownloadDir(context) + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
