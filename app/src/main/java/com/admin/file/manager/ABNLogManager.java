@@ -249,7 +249,6 @@ public class ABNLogManager {
      * @param content  上下文
      * @param append   is append, if true, write to the end of file, else clear content of file and write into it
      * @return return false if content is empty, true otherwise
-     * @throws RuntimeException if an error occurs while operator FileWriter
      */
     public static boolean writeFile(String filePath, String content, boolean append) {
         FileOutputStream outputStream = null;
