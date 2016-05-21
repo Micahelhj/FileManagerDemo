@@ -5,6 +5,10 @@ import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.adutils.ABLogUtil;
+import com.adutils.file.ABStreamUtil;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -116,13 +120,14 @@ public class ABNLogManager {
             ABNLogEntity firstLogEntity;
             while (true) {
                 try {
-                    //将此处的睡眠时间分别改为100和1000，观察运行结果
-                    Thread.sleep(1000);
                     firstLogEntity = queue.take();
                     checkLogSize();
                     deleteExpiredLog();
                     deleteMemoryExpiredLog();
-                    writeFile(ABFileManager.getNormalLogDownloadDir(context) + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
+                    //将此处的睡眠时间分别改为100和1000，观察运行结果
+                    Thread.sleep(2000);
+                    ABLogUtil.i("queue.size()====="+queue.size());
+                    writeFile(LOG_PATH_MEMORY_DIR + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -237,29 +242,6 @@ public class ABNLogManager {
         }
     }
 
-    public static boolean writeFile(String filePath, InputStream stream, boolean append) {
-        OutputStream o = null;
-        try {
-            File f = new File(filePath);
-            ABFileUtil.makeDirs(filePath);
-            o = new FileOutputStream(filePath, append);
-            byte data[] = new byte[1024];
-            int length = -1;
-            while ((length = stream.read(data)) != -1) {
-                o.write(data, 0, length);
-            }
-            o.flush();
-            return true;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("FileNotFoundException occurred. ", e);
-        } catch (IOException e) {
-            throw new RuntimeException("IOException occurred. ", e);
-        } finally {
-            ABIOUtil.close(o);
-            ABIOUtil.close(stream);
-        }
-    }
-
     /**
      * write file
      *
@@ -271,7 +253,8 @@ public class ABNLogManager {
      */
     public static boolean writeFile(String filePath, String content, boolean append) {
         FileOutputStream outputStream = null;
-        OutputStreamWriter write = null;
+        ByteArrayInputStream in=null;
+        String currStr="";
         if (TextUtils.isEmpty(content)) {
             return false;
         }
@@ -279,20 +262,26 @@ public class ABNLogManager {
             File f = new File(filePath);
             ABFileUtil.makeDirs(filePath);
             outputStream = new FileOutputStream(f, append);
-            write = new OutputStreamWriter(outputStream, "UTF-8");
-            write.write("= " + new Timestamp(System.currentTimeMillis()));
-            write.write("\r\n");//换行
-            write.write(content);
-            write.write("\r\n");//换行
-            write.write("----------------------------------------------------------------");
-            write.write("\r\n");//换行
+            currStr="= " + new Timestamp(System.currentTimeMillis())
+                    +"\r\n"
+                    +content
+                    +"\r\n"
+                    +"----------------------------------------------------------------"
+                    +"\r\n";
+            in = new ByteArrayInputStream(currStr.getBytes("UTF-8"));
+            byte data[] = new byte[1024];
+            int length = -1;
+            while ((length = in.read(data)) != -1) {
+                outputStream.write(data, 0, length);
+            }
+            outputStream.flush();
         } catch (Exception e) {
             System.out.println("写文件内容操作出错");
             e.printStackTrace();
         } finally {
             try {
-                if (write != null)
-                    write.close();
+                if (in!=null)
+                    in.close();
                 if (outputStream != null)
                     outputStream.close();
             } catch (IOException e) {

@@ -15,20 +15,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView tv0 = (TextView) findViewById(R.id.btn_0);
-        TextView tv1 = (TextView) findViewById(R.id.btn_1);
-        TextView tv2 = (TextView) findViewById(R.id.btn_2);
-        TextView tv3 = (TextView) findViewById(R.id.btn_3);
-        TextView tv4 = (TextView) findViewById(R.id.btn_4);
-        TextView tv5 = (TextView) findViewById(R.id.btn_5);
-
-
-        File f0 = ABFileManager.getFile(ABFileManager.getCacheDownloadDir(this), "f0.txt");
-        File f10 = ABFileManager.getFile(ABFileManager.getNormalLogDownloadDir(this), "f1.txt");
-//        File f11 = ABFileManager.getFile(ABFileManager.getCrachLogDownloadDir(this), "f1.txt");
-        File f2 = ABFileManager.getFile(ABFileManager.getDbDownloadDir(this), "f2.txt");
-        File f3 = ABFileManager.getFile(ABFileManager.getFileDownloadDir(this), "f3.txt");
-        File f4 = ABFileManager.getFile(ABFileManager.getImageDownloadDir(this), "f4.txt");
     }
 
     @Override
