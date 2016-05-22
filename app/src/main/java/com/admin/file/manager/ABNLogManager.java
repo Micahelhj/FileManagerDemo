@@ -6,16 +6,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.adutils.ABLogUtil;
-import com.adutils.file.ABStreamUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -268,7 +264,7 @@ public class ABNLogManager {
                     +"----------------------------------------------------------------"
                     +"\r\n";
             in = new ByteArrayInputStream(currStr.getBytes("UTF-8"));
-            byte data[] = new byte[1024];
+            byte data[] = new byte[2048];
             int length = -1;
             while ((length = in.read(data)) != -1) {
                 outputStream.write(data, 0, length);
@@ -284,7 +280,6 @@ public class ABNLogManager {
                 if (outputStream != null)
                     outputStream.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
