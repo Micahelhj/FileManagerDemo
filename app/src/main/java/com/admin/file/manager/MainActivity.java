@@ -3,11 +3,8 @@ package com.admin.file.manager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.adutils.ABLogUtil;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    ABNLogManager.recordLog("cals", "阿斯达岁的" + a++);
+                    ABLogManager.recordLog("cals", "阿斯达岁的" + a++);
                 }
 //                break;
             case R.id.btn_2:
@@ -39,17 +36,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_3:
                 ABLogUtil.i("iopiopiopipi");
-                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
-                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
-                ABNLogManager.recordLog("cals", "阿斯顿发苏打水一点");
-                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
-                ABNLogManager.recordLog("cals", "asdasdasdasdsad");
-                ABNLogManager.recordLog("cals", "爱上大飒飒的撒");
-                ABNLogManager.recordLog("asdadasd", "asdasdasdasdsad");
-                ABNLogManager.recordLog("cals", "阿斯达岁的");
-                ABNLogManager.recordLog("qweqwe", "asdasdasdasdsad");
-                ABNLogManager.recordLog("cals", "爱上大萨达四大四");
-                ABNLogManager.recordLog("123123", "asdasdasdasdsad");
+                ABLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABLogManager.recordLog("cals", "阿斯顿发苏打水一点");
+                ABLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABLogManager.recordLog("cals", "asdasdasdasdsad");
+                ABLogManager.recordLog("cals", "爱上大飒飒的撒");
+                ABLogManager.recordLog("asdadasd", "asdasdasdasdsad");
+                ABLogManager.recordLog("cals", "阿斯达岁的");
+                ABLogManager.recordLog("qweqwe", "asdasdasdasdsad");
+                ABLogManager.recordLog("cals", "爱上大萨达四大四");
+                ABLogManager.recordLog("123123", "asdasdasdasdsad");
                 break;
             default:
                 break;

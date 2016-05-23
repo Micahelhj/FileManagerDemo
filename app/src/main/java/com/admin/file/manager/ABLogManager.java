@@ -1,37 +1,29 @@
 package com.admin.file.manager;
 
 import android.content.Context;
-import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.adutils.ABTextUtil;
-import com.adutils.file.ABStreamUtil;
+import com.adutils.ABLogUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static java.lang.Thread.sleep;
 
 /**
  * @author Michael_hj
@@ -42,7 +34,7 @@ import static java.lang.Thread.sleep;
 public class ABLogManager {
     private static Context context;
     private static final String TAG = "ABLogManager";
-    private static LinkedList queue = null;
+    private static BlockingQueue<ABNLogEntity> queue = null;
     private static final int MEMORY_LOG_FILE_MAX_SIZE = 10 * 1024 * 1024; // 内存中日志文件最大值，10M
     private static final int SDCARD_LOG_FILE_SAVE_DAYS = 7; // sd卡中日志文件的最多保存天数
     private static String LOG_PATH_MEMORY_DIR; // 日志文件在内存中的路径(日志文件在安装目录中的路径)
@@ -94,7 +86,7 @@ public class ABLogManager {
      * 初始化sing线程池并加入一个线程
      */
     private static void initPoolWorker() {
-        queue = new LinkedList();
+        queue = new ArrayBlockingQueue<ABNLogEntity>(10);
         pool = Executors.newSingleThreadExecutor();
         pool.execute(new PoolWorker());
     }
@@ -108,8 +100,11 @@ public class ABLogManager {
         if (queue == null || pool == null)
             initPoolWorker();
         synchronized (queue) {
-            queue.addLast(t);
-            queue.notify();
+            try {
+                queue.put(t);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -120,34 +115,17 @@ public class ABLogManager {
         public void run() {
             ABNLogEntity firstLogEntity;
             while (true) {
-                synchronized (queue) {
-                    while (queue.isEmpty()) {
-                        try {
-                            queue.wait();
-                        } catch (InterruptedException ignored) {
-                        }
-                    }
+                try {
+                    firstLogEntity = queue.take();
                     checkLogSize();
                     deleteExpiredLog();
                     deleteMemoryExpiredLog();
-                    try {
-                        sleep(1000);// 休眠，创建文件，然后处理文件，不然该文件还没创建，会影响文件删除
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    firstLogEntity = (ABNLogEntity) queue.removeFirst();
-                    InputStream in_withcode = null;
-                    try {
-                        in_withcode = new ByteArrayInputStream(firstLogEntity.getData().getBytes("UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-//                    writeFile(LOG_PATH_MEMORY_DIR + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, in_withcode, true);
+                    //将此处的睡眠时间分别改为100和1000，观察运行结果
+                    Thread.sleep(2000);
+                    Log.i("test","queue.size()====="+queue.size()+"===="+firstLogEntity.getData());
                     writeFile(LOG_PATH_MEMORY_DIR + File.separator + firstLogEntity.getDir() + File.separator + CURR__LOG_NAME, firstLogEntity.getData(), true);
-                }
-                try {
-                    run();
-                } catch (RuntimeException e) {
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -260,29 +238,6 @@ public class ABLogManager {
         }
     }
 
-    public static boolean writeFile(String filePath, InputStream stream, boolean append) {
-        OutputStream o = null;
-        try {
-            File f = new File(filePath);
-            ABFileUtil.makeDirs(filePath);
-            o = new FileOutputStream(filePath, append);
-            byte data[] = new byte[1024];
-            int length = -1;
-            while ((length = stream.read(data)) != -1) {
-                o.write(data, 0, length);
-            }
-            o.flush();
-            return true;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("FileNotFoundException occurred. ", e);
-        } catch (IOException e) {
-            throw new RuntimeException("IOException occurred. ", e);
-        } finally {
-            ABIOUtil.close(o);
-            ABIOUtil.close(stream);
-        }
-    }
-
     /**
      * write file
      *
@@ -290,12 +245,11 @@ public class ABLogManager {
      * @param content  上下文
      * @param append   is append, if true, write to the end of file, else clear content of file and write into it
      * @return return false if content is empty, true otherwise
-     * @throws RuntimeException if an error occurs while operator FileWriter
      */
     public static boolean writeFile(String filePath, String content, boolean append) {
         FileOutputStream outputStream = null;
-        OutputStreamWriter write = null;
-        Date date = new Date();
+        ByteArrayInputStream in=null;
+        String currStr="";
         if (TextUtils.isEmpty(content)) {
             return false;
         }
@@ -303,49 +257,33 @@ public class ABLogManager {
             File f = new File(filePath);
             ABFileUtil.makeDirs(filePath);
             outputStream = new FileOutputStream(f, append);
-            write = new OutputStreamWriter(outputStream, "UTF-8");
-            write.write("= " + new Timestamp(System.currentTimeMillis()));
-            write.write("\r\n");//换行
-            write.write(content);
-            write.write("\r\n");//换行
-            write.write("----------------------------------------------------------------");
-            write.write("\r\n");//换行
+            currStr="= " + new Timestamp(System.currentTimeMillis())
+                    +"\r\n"
+                    +content
+                    +"\r\n"
+                    +"----------------------------------------------------------------"
+                    +"\r\n";
+            in = new ByteArrayInputStream(currStr.getBytes("UTF-8"));
+            byte data[] = new byte[2048];
+            int length = -1;
+            while ((length = in.read(data)) != -1) {
+                outputStream.write(data, 0, length);
+            }
+            outputStream.flush();
         } catch (Exception e) {
             System.out.println("写文件内容操作出错");
             e.printStackTrace();
         } finally {
-            date = null;
             try {
-                if (write != null)
-                    write.close();
+                if (in!=null)
+                    in.close();
                 if (outputStream != null)
                     outputStream.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
         return true;
-    }
-
-    private static final String date_format = "yyyy-MM-dd HH:mm:ss";
-    private static ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>();
-
-    public static DateFormat getDateFormat() {
-        DateFormat df = threadLocal.get();
-        if (df == null) {
-            df = new SimpleDateFormat(date_format);
-            threadLocal.set(df);
-        }
-        return df;
-    }
-
-    public static String formatDate(Date date) throws ParseException {
-        return getDateFormat().format(date);
-    }
-
-    public static Date parse(String strDate) throws ParseException {
-        return getDateFormat().parse(strDate);
     }
 
     /**
